@@ -1,5 +1,8 @@
 package hu.sze.zoltan.futarflotta;
 
+
+//javascript:void(promt(",gApplication.getMap(),getCenter()));
+
 import android.app.Dialog;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -65,7 +69,7 @@ public class MapV2 extends FragmentActivity implements
 		// Setting position for the MarkerOptions
 		options.position(latLng);
 
-		// options.icon(BitmapDescriptorFactory.fromResource(R.drawable.current_position));
+		options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
 		// Getting Reference to SupportMapFragment of activity_map.xml
 		SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager()

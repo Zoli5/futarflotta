@@ -36,12 +36,12 @@
         android:text="Dokumentumok" />
 
     <Button
-        android:id="@+id/btnAkarmi"
+        android:id="@+id/btnTasks"
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:layout_alignLeft="@+id/btnDoc"
         android:layout_alignTop="@+id/btnSettings"
-        android:text="Valami" />
+        android:text="Feladatok" />
 
     <Button
         android:id="@+id/btnLogOut"
