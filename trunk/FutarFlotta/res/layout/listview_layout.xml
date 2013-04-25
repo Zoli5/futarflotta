@@ -9,11 +9,19 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNev" />
 
     <TextView
         android:id="@+id/tvCim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvNev" />
+        android:layout_below="@id/tvUserName" />
+    
+    
 
 </RelativeLayout>

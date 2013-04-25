@@ -15,6 +15,7 @@ public class MainActivity extends Activity {
 	private Button btnTasks;
 	public TextView txtViewUser;
 	public String value;
+	public String userName;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,6 +29,7 @@ public class MainActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 		    value = extras.getString("fullName");
+		    userName = extras.getString("userNAme");
 		}
 		
 		txtViewUser.setText(value);
@@ -54,6 +56,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent myIntent = new Intent(MainActivity.this,ToDoTasks.class);
+				myIntent.putExtra("userName", userName);
 				startActivity(myIntent);
 			}
 		});
