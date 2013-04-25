@@ -57,6 +57,7 @@ public class Login extends Activity {
 						Intent myIntent = new Intent(Login.this,
 								MainActivity.class);
 						myIntent.putExtra("fullName", user.getFullName());
+						myIntent.putExtra("userName", user.getUserName());
 						startActivity(myIntent);
 
 					} else {
