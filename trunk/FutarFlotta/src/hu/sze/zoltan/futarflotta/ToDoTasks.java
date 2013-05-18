@@ -12,13 +12,17 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.widget.TextView;
 
 public class ToDoTasks extends Activity {
 
@@ -177,6 +181,20 @@ public class ToDoTasks extends Activity {
 
 			// Setting adapter for the listview
 			mListView.setAdapter(adapter);
+			mListView.setOnItemClickListener(new OnItemClickListener(
+					) {
+
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view,
+								int position, long id) {
+							TextView tv = (TextView) view.findViewById(R.id.tvCim);
+							String address = tv.getText().toString();
+							
+							Intent myIntent = new Intent(ToDoTasks.this,MapV2.class);
+							myIntent.putExtra("address", address);
+							startActivity(myIntent);
+						}
+			});
 //			progressBar.setVisibility(1);			
 		}	
 	}

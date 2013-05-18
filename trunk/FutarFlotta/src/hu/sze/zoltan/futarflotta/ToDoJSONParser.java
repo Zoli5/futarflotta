@@ -59,7 +59,7 @@ public class ToDoJSONParser {
 			latitude = jTasks.getString("latitude");
 			longitude = jTasks.getString("longitude");
 			
-			String cim = "Latitude: " + latitude + ", longitude: " + longitude;
+			String cim = "" + latitude + "|" + longitude + "!";
 						
 			task.put("name", name);
 			task.put("username", username);
