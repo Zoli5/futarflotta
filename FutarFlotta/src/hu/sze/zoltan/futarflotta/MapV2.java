@@ -1,7 +1,5 @@
 package hu.sze.zoltan.futarflotta;
 
-//javascript:void(promt(",gApplication.getMap(),getCenter()));
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
