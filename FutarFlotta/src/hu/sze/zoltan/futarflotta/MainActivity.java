@@ -16,6 +16,7 @@ public class MainActivity extends Activity {
 	public TextView txtViewUser;
 	public String value;
 	public String userName;
+	public String ures = "main";
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 //				Intent myIntent = new Intent(MainActivity.this,MapV2.class);
 				Intent myIntent = new Intent(MainActivity.this,Map.class);
+//				myIntent.putExtra("address", ures);
 				startActivity(myIntent);
 			}
 		});
