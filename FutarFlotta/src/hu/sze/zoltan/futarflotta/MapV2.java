@@ -94,6 +94,8 @@ public class MapV2 extends FragmentActivity implements
 
 	@Override
 	public void onMyLocationChange(Location location) {
+		googleMap.clear();
+		
 		// Getting latitude of the current location
 		double latitude = location.getLatitude();
 
@@ -105,13 +107,18 @@ public class MapV2 extends FragmentActivity implements
 		LatLng latLngDes = new LatLng(lat, lon);
 
 		// Instantiating MarkerOptions class
-		MarkerOptions options = new MarkerOptions();
+		MarkerOptions start_options = new MarkerOptions();
+		MarkerOptions des_options = new MarkerOptions();
 
 		// Setting position for the MarkerOptions
-		options.position(latLng);
+		start_options.position(latLng);
+		des_options.position(latLngDes);
 
-		options.icon(BitmapDescriptorFactory
+		start_options.icon(BitmapDescriptorFactory
 				.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+		
+		des_options.icon(BitmapDescriptorFactory
+				.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
 		// Getting Reference to SupportMapFragment of activity_map.xml
 		SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager()
@@ -119,7 +126,8 @@ public class MapV2 extends FragmentActivity implements
 
 		googleMap = fm.getMap();
 
-		googleMap.addMarker(options);
+		googleMap.addMarker(start_options);
+		googleMap.addMarker(des_options);
 
 		// Showing the current location in Google Map
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -127,9 +135,7 @@ public class MapV2 extends FragmentActivity implements
 		// Zoom in the Google Map
 //		googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 				
-//		Polyline line = googleMap.addPolyline(new PolylineOptions().add(latLng, latLngDes).color(Color.RED).width(2).geodesic(true));
-		
-//		googleMap.clear();
+//		Polyline line = googleMap.addPolyline(new PolylineOptions().add(latLng, latLngDes).color(Color.RED).width(2).geodesic(true));		
 		
 		if(isEnd){
 			String url = getDirectionsUrl(latLng, latLngDes);
