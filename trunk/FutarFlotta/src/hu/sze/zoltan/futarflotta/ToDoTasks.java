@@ -12,6 +12,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,10 +36,10 @@ public class ToDoTasks extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.todotasks_activity);
-		
+
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-		    userName = extras.getString("userNAme");
+			userName = extras.getString("userNAme");
 		}
 
 		// URL to the JSON data
@@ -51,7 +53,7 @@ public class ToDoTasks extends Activity {
 
 		// Getting a reference to ListView of activity_main
 		mListView = (ListView) findViewById(R.id.lv_tasks);
-//		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+		// progressBar = (ProgressBar) findViewById(R.id.progressBar);
 	}
 
 	/** A method to download json data from url */
@@ -150,10 +152,10 @@ public class ToDoTasks extends Activity {
 			} catch (Exception e) {
 				Log.d("Exception", e.toString());
 			}
-			
-//			for (int i = 0; i<tasks.size(); i++){
-//				uName[i] = tasks.get(i).toString();
-//			}
+
+			// for (int i = 0; i<tasks.size(); i++){
+			// uName[i] = tasks.get(i).toString();
+			// }
 
 			// Keys used in Hashmap
 			String[] from = { "name", "username", "cim" };
@@ -168,34 +170,44 @@ public class ToDoTasks extends Activity {
 
 			return adapter;
 		}
-		
+
 		/** Invoked by the Android on "doInBackground" is executed */
 		@Override
 		protected void onPostExecute(SimpleAdapter adapter) {
-//			mListView.setVisibility(0);
-			
-//			if(uName.contains(userName)){
-//				
-//			}
-//			Toast.makeText(getBaseContext(),  uName[0], Toast.LENGTH_LONG).show();
+			if (adapter.isEmpty()) {
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						getApplicationContext());
+				alertDialogBuilder
+						.setMessage(
+								"A lista üres! Visszalépéshez nyomja meg a 'Vissza' gombot.")
+						.setCancelable(false)
+						.setPositiveButton("Vissza",
+								new DialogInterface.OnClickListener() {
 
-			// Setting adapter for the listview
-			mListView.setAdapter(adapter);
-			mListView.setOnItemClickListener(new OnItemClickListener(
-					) {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										finish();
+									}
+								});
+				AlertDialog alert = alertDialogBuilder.create();
+				alert.show();
+			} else {
+				mListView.setAdapter(adapter);
+				mListView.setOnItemClickListener(new OnItemClickListener() {
 
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-							TextView tv = (TextView) view.findViewById(R.id.tvCim);
-							String address = tv.getText().toString();
-							
-							Intent myIntent = new Intent(ToDoTasks.this,MapV2.class);
-							myIntent.putExtra("address", address);
-							startActivity(myIntent);
-						}
-			});
-//			progressBar.setVisibility(1);			
-		}	
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						TextView tv = (TextView) view.findViewById(R.id.tvCim);
+						String address = tv.getText().toString();
+
+						Intent myIntent = new Intent(ToDoTasks.this, MapV2.class);
+						myIntent.putExtra("address", address);
+						startActivity(myIntent);
+					}
+				});
+			}
+		}
 	}
 }
