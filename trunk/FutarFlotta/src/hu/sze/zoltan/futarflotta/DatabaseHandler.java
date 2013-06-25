@@ -108,15 +108,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		try {
-			cursor = db.query(TABLE_USERS, null, KEY_USERNAME + "=?",
-					new String[] { String.valueOf(userName) }, null, null, null);
+			cursor = db
+					.query(TABLE_USERS, null, KEY_USERNAME + "=?",
+							new String[] { String.valueOf(userName) }, null,
+							null, null);
 		} catch (CursorIndexOutOfBoundsException e) {
 			e.printStackTrace();
 			match = false;
 		}
 
 		if (cursor != null) {
-			if (cursor.moveToFirst()){
+			if (cursor.moveToFirst()) {
 				match = true;
 			}
 		}
@@ -137,4 +139,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return cursor.getCount();
 	}
 
+	// Updating single contact
+	public int updateContact(Users users) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_USERNAME, users.getUserName()); // Contact user Name
+		values.put(KEY_FULLNAME, users.getFullName()); // Contact full name
+		values.put(KEY_PASSWORD, users.getPassword()); // Contact password
+
+		// updating row
+		return db.update(TABLE_USERS, values, KEY_ID + " = ?",
+				new String[] { String.valueOf(users.getID()) });
+	}
 }

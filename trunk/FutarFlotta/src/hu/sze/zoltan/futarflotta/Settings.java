@@ -12,13 +12,21 @@ import android.widget.ToggleButton;
 public class Settings extends Activity {
 	public ToggleButton toggleButton;
 	public Button btnGPS;
+	public Button btnPasswordChange;
+	public String userName;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_activity);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+		    userName = extras.getString("userName");
+		}
 
 		toggleButton = (ToggleButton) findViewById(R.id.toggleBtnGPS);
 		btnGPS = (Button) findViewById(R.id.btnGPS);
+		btnPasswordChange = (Button) findViewById(R.id.btnPasswordChange);
 		
 		toggleButton.setChecked(false);
 		toggleButton.setActivated(false);
@@ -37,6 +45,16 @@ public class Settings extends Activity {
 						android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 				startActivity(callGPSSettingIntent);
 				
+			}
+		});
+		
+		btnPasswordChange.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent myIntent = new Intent(getApplicationContext(),PasswordChange.class);
+				myIntent.putExtra("userName", userName);
+				startActivity(myIntent);
 			}
 		});
 	}
