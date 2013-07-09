@@ -41,6 +41,8 @@ public class MapV2 extends FragmentActivity implements
 	public double lon = 0.0;
 	public double lat = 0.0;
 	public boolean isEnd = false;
+	public MarkerOptions start_options;
+	public MarkerOptions des_options;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,6 @@ public class MapV2 extends FragmentActivity implements
 
 	@Override
 	public void onMyLocationChange(Location location) {
-		googleMap.clear();
 		
 		// Getting latitude of the current location
 		double latitude = location.getLatitude();
@@ -107,8 +108,8 @@ public class MapV2 extends FragmentActivity implements
 		LatLng latLngDes = new LatLng(lat, lon);
 
 		// Instantiating MarkerOptions class
-		MarkerOptions start_options = new MarkerOptions();
-		MarkerOptions des_options = new MarkerOptions();
+		start_options = new MarkerOptions();
+		des_options = new MarkerOptions();
 
 		// Setting position for the MarkerOptions
 		start_options.position(latLng);
@@ -293,7 +294,9 @@ public class MapV2 extends FragmentActivity implements
 				lineOptions.color(Color.BLUE);	
 				
 			}
-			
+			googleMap.clear();
+			googleMap.addMarker(start_options);
+			googleMap.addMarker(des_options);
 			// Drawing polyline in the Google Map for the i-th route
 			googleMap.addPolyline(lineOptions);							
 		}			

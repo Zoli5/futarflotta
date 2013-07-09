@@ -28,18 +28,18 @@
         android:text="Beállítások" />
 
     <Button
-        android:id="@+id/btnDoc"
+        android:id="@+id/btnUsers"
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:layout_alignTop="@+id/btnMap"
         android:layout_toRightOf="@+id/btnMap"
-        android:text="Dokumentumok" />
+        android:text="Felhasználók" />
 
     <Button
         android:id="@+id/btnTasks"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:layout_alignLeft="@+id/btnDoc"
+        android:layout_alignLeft="@+id/btnUsers"
         android:layout_alignTop="@+id/btnSettings"
         android:text="Feladatok" />
 

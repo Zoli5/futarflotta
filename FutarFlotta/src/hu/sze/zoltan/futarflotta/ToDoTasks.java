@@ -43,7 +43,7 @@ public class ToDoTasks extends Activity {
 		}
 
 		// URL to the JSON data
-		String strUrl = "http://futarflotta.azurewebsites.net";
+		String strUrl = "http://futarflotta.azurewebsites.net/task.html";
 
 		// Creating a new non-ui thread task to download json data
 		DownloadTask downloadTask = new DownloadTask();

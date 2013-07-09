@@ -16,7 +16,7 @@ public class PasswordChange extends Activity{
 	public EditText edNewPassword;
 	public EditText edNewPassword2;
 	public String userName;
-	public Users user;
+	public UsersItem user;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
