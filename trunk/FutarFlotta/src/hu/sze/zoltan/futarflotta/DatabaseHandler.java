@@ -44,7 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	void addUser(Users users) {
+	void addUser(UsersItem users) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -58,7 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting single user
-	Users getUsers(String username) {
+	UsersItem getUsers(String username) {
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.query(TABLE_USERS, new String[] { KEY_ID,
@@ -68,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (cursor != null)
 			cursor.moveToFirst();
 
-		Users contact = new Users(Integer.parseInt(cursor.getString(0)),
+		UsersItem contact = new UsersItem(Integer.parseInt(cursor.getString(0)),
 				cursor.getString(1), cursor.getString(2), cursor.getString(3));
 		// return contact
 		db.close();
@@ -77,8 +77,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting All Contacts
-	public List<Users> getAllContacts() {
-		List<Users> usersList = new ArrayList<Users>();
+	public List<UsersItem> getAllContacts() {
+		List<UsersItem> usersList = new ArrayList<UsersItem>();
 		// Select All Query
 		String selectQuery = "SELECT  * FROM " + TABLE_USERS;
 
@@ -88,7 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
 			do {
-				Users users = new Users();
+				UsersItem users = new UsersItem();
 				// users.setID(Integer.parseInt(cursor.getString(0)));
 				users.setUserName(cursor.getString(1));
 				// users.setFullName(cursor.getString(2));
@@ -140,7 +140,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Updating single contact
-	public int updateContact(Users users) {
+	public int updateContact(UsersItem users) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();

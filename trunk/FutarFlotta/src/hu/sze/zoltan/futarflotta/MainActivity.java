@@ -14,6 +14,7 @@ public class MainActivity extends Activity {
 	private Button btnMap;
 	private Button btnTasks;
 	private Button btnSettings;
+	private Button btnUsers;
 	public TextView txtViewUser;
 	public String value;
 	public String userName;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
 		btnLogOut = (Button) findViewById(R.id.btnLogOut);
 		btnTasks = (Button) findViewById(R.id.btnTasks);
 		btnSettings = (Button) findViewById(R.id.btnSettings);
+		btnUsers = (Button) findViewById(R.id.btnUsers);
 		txtViewUser = (TextView) findViewById(R.id.txtFelhasznalo);
 		
 		Bundle extras = getIntent().getExtras();
@@ -72,6 +74,15 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent myIntent = new Intent (MainActivity.this, Settings.class);
 				myIntent.putExtra("userName", userName);
+				startActivity(myIntent);		
+			}
+		});
+		
+btnUsers.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent myIntent = new Intent (MainActivity.this, UsersActivity.class);
 				startActivity(myIntent);		
 			}
 		});

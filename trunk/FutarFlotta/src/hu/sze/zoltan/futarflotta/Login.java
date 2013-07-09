@@ -19,7 +19,7 @@ public class Login extends Activity {
 
 	public String userName;
 	public String password;
-	public Users user;
+	public UsersItem user;
 	public int kiserlet = 0;
 
 	@Override
@@ -29,11 +29,11 @@ public class Login extends Activity {
 
 		final DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
-		db.addUser(new Users("zszuri", "Szuri Zoltán", "1234"));
-		db.addUser(new Users("tszabo", "Szabó Tamás", "1234"));
-		db.addUser(new Users("lbedecs", "Bedecs László", "1234"));
-		db.addUser(new Users("dcsanicz", "Csánicz Dóri", "1234"));
-		db.addUser(new Users("teszt", "Teszt", "a"));
+		db.addUser(new UsersItem("zszuri", "Szuri Zoltán", "1234"));
+		db.addUser(new UsersItem("tszabo", "Szabó Tamás", "1234"));
+		db.addUser(new UsersItem("lbedecs", "Bedecs László", "1234"));
+		db.addUser(new UsersItem("dcsanicz", "Csánicz Dóri", "1234"));
+		db.addUser(new UsersItem("teszt", "Teszt", "a"));
 
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnCancel = (Button) findViewById(R.id.btnCancel);

@@ -1,73 +1,71 @@
-package hu.sze.zoltan.futarflotta;
+﻿package hu.sze.zoltan.futarflotta;
 
+/**
+ * Represents an item in a ToDo list
+ */
 public class Users {
-	// private variables
-	int _id;
-	String _username;
-	String _fullname;
-	String _password;
 
-	// Empty constructor
+	@com.google.gson.annotations.SerializedName("username")
+	private String mUserName;
+
+	@com.google.gson.annotations.SerializedName("id")
+	private int mId;
+
+	@com.google.gson.annotations.SerializedName("fullname")
+	private String mFullName;
+	
+	@com.google.gson.annotations.SerializedName("password")
+	private String mPassword;
+
 	public Users() {
+	}
 
+	@Override
+	public String toString() {
+		return getUserName();
+	}
+
+	public Users(int id, String username, String fullname, String password) {
+		this.setId(id);
+		this.setUserName(username);
+		this.setFullName(fullname);
+		this.setPassword(password);
+	}
+
+	public String getUserName() {
+		return mUserName;
 	}
 	
-	public Users(String username) {
-		this._username = username;
-	}
-
-	// constructor
-	public Users(int id, String username, String fullname, String password) {
-		this._id = id;
-		this._username = username;
-		this._fullname = fullname;
-		this._password = password;
-	}
-
-	// constructor
-	public Users(String username, String fullname, String password) {
-		this._username = username;
-		this._fullname = fullname;
-		this._password = password;
-	}
-
-	// getting ID
-	public int getID() {
-		return this._id;
-	}
-
-	// setting id
-	public void setID(int id) {
-		this._id = id;
-	}
-
-	// getting user name
-	public String getUserName() {
-		return this._username;
-	}
-
-	// setting user name
-	public void setUserName(String username) {
-		this._username = username;
-	}
-
-	// getting full name
 	public String getFullName() {
-		return this._fullname;
+		return mFullName;
 	}
-
-	// setting full name
-	public void setFullName(String fullname) {
-		this._fullname = fullname;
-	}
-
-	// getting password
+	
 	public String getPassword() {
-		return this._password;
+		return mPassword;
+	}
+	
+	public int getId() {
+		return mId;
 	}
 
-	// setting password
+	public final void setUserName(String username) {
+		mUserName = username;
+	}
+	
+	public final void setId(int id) {
+		mId = id;
+	}
+
+	public void setFullName(String fullname) {
+		mFullName = fullname;
+	}
+	
 	public void setPassword(String password) {
-		this._password = password;
+		mPassword = password;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof Users && ((Users) o).mId == mId;
 	}
 }
