@@ -50,5 +50,15 @@ public class UsersAdapter extends ArrayAdapter<Users> {
 
 		return row;
 	}
+	
+	public String getUser(int position){
+		int id = position;
+		String user;
+		
+		final Users currentUser = getItem(id);
+		user = currentUser.getFullName();
+		
+		return user;
+	}
 
 }
