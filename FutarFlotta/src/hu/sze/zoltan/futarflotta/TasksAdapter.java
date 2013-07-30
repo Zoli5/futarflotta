@@ -1,4 +1,4 @@
-﻿package hu.sze.zoltan.futarflotta;
+package hu.sze.zoltan.futarflotta;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 /**
  * Adapter to bind a Users List to a view
  */
-public class UsersAdapter extends ArrayAdapter<Users> {
+public class TasksAdapter extends ArrayAdapter<Tasks> {
 
 	/**
 	 * Adapter context
@@ -23,7 +23,7 @@ public class UsersAdapter extends ArrayAdapter<Users> {
 	 */
 	int mLayoutResourceId;
 
-	public UsersAdapter(Context context, int layoutResourceId) {
+	public TasksAdapter(Context context, int layoutResourceId) {
 		super(context, layoutResourceId);
 
 		mContext = context;
@@ -37,7 +37,7 @@ public class UsersAdapter extends ArrayAdapter<Users> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 
-		final Users currentItem = getItem(position);
+		final Tasks currentItem = getItem(position);
 
 		if (row == null) {
 			LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
@@ -45,20 +45,27 @@ public class UsersAdapter extends ArrayAdapter<Users> {
 		}
 
 		row.setTag(currentItem);
-		final TextView textview = (TextView) row.findViewById(R.id.txtUsers);
-		textview.setText(currentItem.getUserName());
+		final TextView textview = (TextView) row.findViewById(R.id.taskItem);
+		textview.setText(currentItem.getAddress());
 
 		return row;
 	}
 	
-	public String getUser(int position){
-		int id = position;
-		String user;
-		
-		final Users currentUser = getItem(id);
-		user = currentUser.getFullName();
-		
-		return user;
-	}
+//	public String getItem(int position){
+//		int id = position;
+//		String task;
+//		
+//		final Tasks currentTask = getItem(id);
+//		task = currentTask.getAddress();
+//		
+//		return task;
+//	}
+	
+//	@Override
+//	public Tasks getItem(int position) {
+//		final Tasks currentItem = getItem(position);
+//		
+//		return currentItem;
+//	}
 
 }

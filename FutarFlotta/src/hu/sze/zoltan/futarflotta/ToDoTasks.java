@@ -39,7 +39,7 @@ public class ToDoTasks extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			userName = extras.getString("userNAme");
+			userName = extras.getString("userName");
 		}
 
 		// URL to the JSON data

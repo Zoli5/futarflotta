@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(MainActivity.this,ToDoTasks.class);
+				Intent myIntent = new Intent(MainActivity.this,TasksActivity.class);
 				myIntent.putExtra("userName", userName);
 				startActivity(myIntent);
 			}
