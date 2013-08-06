@@ -1,12 +1,16 @@
 package hu.sze.zoltan.futarflotta;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
@@ -37,7 +41,29 @@ public class MainActivity extends Activity {
 		    userName = extras.getString("userName");
 		}
 		
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		
 		txtViewUser.setText(value);
+		
+		
+		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			new AlertDialog.Builder(this).setMessage("GPS kötelezõ.").setCancelable(false).setPositiveButton("GPS", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent callGPSSettingIntent = new Intent(
+							android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+					startActivity(callGPSSettingIntent);
+				}
+			}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+					Toast.makeText(getApplicationContext(), "GPS nincs bekapcsolva", Toast.LENGTH_LONG).show();
+				}
+			}).create().show();
+		}
 		
 		btnMap.setOnClickListener(new OnClickListener() {
 			
@@ -78,7 +104,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-btnUsers.setOnClickListener(new OnClickListener() {
+		btnUsers.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
