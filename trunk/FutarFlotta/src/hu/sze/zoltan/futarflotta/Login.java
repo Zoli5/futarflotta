@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,7 +28,7 @@ public class Login extends Activity {
 	public String userName;
 	public String password;
 	public String fullName;
-	public UsersItem user;
+	// public UsersItem user;
 	public int kiserlet = 0;
 
 	private MobileServiceClient mClient;
@@ -54,8 +53,6 @@ public class Login extends Activity {
 		txtPassword = (EditText) findViewById(R.id.txtPassword);
 		txtUser = (EditText) findViewById(R.id.txtUser);
 
-		
-
 		try {
 			// Create the Mobile Service Client instance, using the provided
 			// Mobile Service URL and key
@@ -76,9 +73,7 @@ public class Login extends Activity {
 			public void onClick(View v) {
 				userName = txtUser.getText().toString();
 				password = txtPassword.getText().toString();
-				
-				Log.d("USERNAME", "Felhasználó: " + userName);  
-				Log.d("PASSWORD", "Jelszó: " + password);  
+
 				mUsersTable = mClient.getTable("Users", Users.class);
 				mUsersTable.where().field("username").eq(userName).and()
 						.field("password").eq(password)
@@ -88,18 +83,19 @@ public class Login extends Activity {
 									int count, Exception exception,
 									ServiceFilterResponse response) {
 								if (exception == null) {
-									Log.d("COUNT", "Valamit számol: " + count);  
-									if(!result.isEmpty()){
+									if (!result.isEmpty()) {
 										for (Users item : result) {
 											kiserlet = 0;
 											txtPassword.setText("");
 											txtUser.setText("");
 
-											Log.d("FULNAME", "Felhasználó: " + item.getFullName());  
 											Intent myIntent = new Intent(
-													Login.this, MainActivity.class);
-											myIntent.putExtra("fullName", item.getFullName());
-											myIntent.putExtra("userName", item.getUserName());
+													Login.this,
+													MainActivity.class);
+											myIntent.putExtra("fullName",
+													item.getFullName());
+											myIntent.putExtra("userName",
+													item.getUserName());
 											startActivity(myIntent);
 										}
 									} else {
@@ -110,12 +106,13 @@ public class Login extends Activity {
 													"OK");
 											kiserlet++;
 										} else {
-											felbukkanoAblak2("Hiba!",
+											felbukkanoAblak2(
+													"Hiba!",
 													"Túl sokszor próbálkozott!",
 													"Kilépés");
 										}
-									}					
-								} else {	
+									}
+								} else {
 									createAndShowDialog(exception, "Error");
 								}
 							}
