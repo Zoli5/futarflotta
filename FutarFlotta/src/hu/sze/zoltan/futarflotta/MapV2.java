@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager.WakeLock;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -43,6 +44,7 @@ public class MapV2 extends FragmentActivity implements
 	public boolean isEnd = false;
 	public MarkerOptions start_options;
 	public MarkerOptions des_options;
+	public WakeLock mWakeLock;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

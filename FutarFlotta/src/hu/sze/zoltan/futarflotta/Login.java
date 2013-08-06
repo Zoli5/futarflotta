@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,11 @@ import android.widget.EditText;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.NextServiceFilterCallback;
+import com.microsoft.windowsazure.mobileservices.ServiceFilter;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 
 public class Login extends Activity {
@@ -28,6 +33,7 @@ public class Login extends Activity {
 	public String userName;
 	public String password;
 	public String fullName;
+	public ProgressDialog dialog;
 	// public UsersItem user;
 	public int kiserlet = 0;
 
@@ -52,13 +58,20 @@ public class Login extends Activity {
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		txtPassword = (EditText) findViewById(R.id.txtPassword);
 		txtUser = (EditText) findViewById(R.id.txtUser);
+		
+		dialog = new ProgressDialog(Login.this);
+		dialog.setTitle("Betöltés...");
+		dialog.setMessage("Kérem várjon...");
+		dialog.setCancelable(false);
+        dialog.setIndeterminate(true);
+        
 
 		try {
 			// Create the Mobile Service Client instance, using the provided
 			// Mobile Service URL and key
 			mClient = new MobileServiceClient(
 					"https://futarflottamobile.azure-mobile.net/",
-					"cMEWVBgHzMZBCrVgFByLvcgwTkfZmo87", this);
+					"cMEWVBgHzMZBCrVgFByLvcgwTkfZmo87", this).withFilter(new ProgressFilter());
 
 		} catch (MalformedURLException e) {
 			createAndShowDialog(
@@ -251,5 +264,40 @@ public class Login extends Activity {
 		builder.setMessage(message);
 		builder.setTitle(title);
 		builder.create().show();
+	}
+	
+	private class ProgressFilter implements ServiceFilter {
+		
+		@Override
+		public void handleRequest(ServiceFilterRequest request, NextServiceFilterCallback nextServiceFilterCallback,
+				final ServiceFilterResponseCallback responseCallback) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (dialog != null){
+						dialog.show();
+					}
+				}
+			});
+			
+			nextServiceFilterCallback.onNext(request, new ServiceFilterResponseCallback() {
+				
+				@Override
+				public void onResponse(ServiceFilterResponse response, Exception exception) {
+					runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							if (dialog != null){
+								dialog.cancel();
+							}
+						}
+					});
+					
+					if (responseCallback != null)  responseCallback.onResponse(response, exception);
+				}
+			});
+		}
 	}
 }
