@@ -53,18 +53,7 @@ public class MapV2 extends FragmentActivity implements
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-//			address = extras.getString("address");
-//			for (int i = 0; i < address.length(); i++) {
-//				while (address.charAt(i) != '|') {
-//					latitude = latitude + address.charAt(i);
-//					i++;
-//				}
-//				i++;
-//				while (address.charAt(i) != '!') {
-//					longitude = longitude + address.charAt(i);
-//					i++;
-//				}
-//			}
+
 			latitude = extras.getString("lat");
 			longitude = extras.getString("lon");
 			lat = Double.parseDouble(latitude);
