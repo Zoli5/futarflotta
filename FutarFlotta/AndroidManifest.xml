@@ -44,33 +44,32 @@
         </activity>
         <activity
             android:name="hu.sze.zoltan.futarflotta.MainActivity"
-            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="hu.sze.zoltan.futarflotta.MapV2"
-            android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="hu.sze.zoltan.futarflotta.TasksActivity"
-            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="hu.sze.zoltan.futarflotta.Settings"
-            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="hu.sze.zoltan.futarflotta.PasswordChange"
-            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="hu.sze.zoltan.futarflotta.UsersActivity"
-            android:label="@string/app_name"
+            android:name="hu.sze.zoltan.futarflotta.About"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait" >
         </activity>
     </application>
