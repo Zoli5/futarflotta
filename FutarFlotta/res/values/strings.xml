@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Futár Flotta</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Újretöltés</string>
     <string name="hello_world">Hello world!</string>
 
     <string name="add_textbox_hint">Add username</string>
@@ -12,5 +12,5 @@
     <string name="textview_text">Item Text</string>
     <string name="task_textview_text">Item Text</string>
     <string name="tasks">Feladatok</string>
-
+	<string name="txt_destination_reached">You have reached your destination!</string>
 </resources>
