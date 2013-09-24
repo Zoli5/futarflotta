@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -122,7 +124,7 @@ public class TasksActivity extends Activity {
 
 		// Get the items that weren't marked as completed and add them in the
 		// adapter
-		mTasksTable.where().field("username").eq(userName).execute(new TableQueryCallback<Tasks>() {
+		mTasksTable.where().field("username").eq(userName).and().field("complete").eq(false).execute(new TableQueryCallback<Tasks>() {
 
 			public void onCompleted(List<Tasks> result, int count, Exception exception, ServiceFilterResponse response) {
 				if (exception == null) {
@@ -199,4 +201,19 @@ public class TasksActivity extends Activity {
 			});
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.tasks, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		if(item.getItemId() == R.id.action_refresh){
+			refreshItemsFromTable();
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+	
 }

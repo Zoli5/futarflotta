@@ -67,6 +67,7 @@ public class Settings extends Activity {
 			public void onClick(View v) {
 				Intent myIntent = new Intent(getApplicationContext(),
 						About.class);
+				startActivity(myIntent);
 			}
 		});
 	}
