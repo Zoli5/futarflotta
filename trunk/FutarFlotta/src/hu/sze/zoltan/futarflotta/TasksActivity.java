@@ -35,6 +35,7 @@ public class TasksActivity extends Activity {
 	public ListView mListView;
 	public String latitude = "";
 	public String longitude = "";
+	public boolean akarmi = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -124,7 +125,7 @@ public class TasksActivity extends Activity {
 
 		// Get the items that weren't marked as completed and add them in the
 		// adapter
-		mTasksTable.where().field("username").eq(userName).and().field("complete").eq(false).execute(new TableQueryCallback<Tasks>() {
+		mTasksTable.where().field("username").eq(userName).and().field("completed").eq(akarmi).execute(new TableQueryCallback<Tasks>() {
 
 			public void onCompleted(List<Tasks> result, int count, Exception exception, ServiceFilterResponse response) {
 				if (exception == null) {
@@ -142,7 +143,6 @@ public class TasksActivity extends Activity {
 			}
 		});
 	}
-
 	/**
 	 * Creates a dialog and shows it
 	 * 
