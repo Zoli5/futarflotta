@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
@@ -30,7 +29,11 @@ public class ProximityActivity extends Activity {
 	String tickerMessage;
 	public String latitude = "";
 	public String longitude = "";
+	public String userName = "";
 
+	public LocationManager locationManager;
+	public PendingIntent pendingIntent;
+	
 	private MobileServiceClient mClient;
 	private MobileServiceTable<Tasks> mTasksTable;
 
@@ -38,16 +41,19 @@ public class ProximityActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.proximity_activity);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 
 			latitude = extras.getString("latitude");
 			longitude = extras.getString("longitude");
+			userName = extras.getString("userName");
 		}
+		
 
 		boolean proximity_entering = getIntent().getBooleanExtra(
-				LocationManager.KEY_PROXIMITY_ENTERING, true);
+				LocationManager.KEY_PROXIMITY_ENTERING, false);
 
 		try {
 			mClient = new MobileServiceClient(
@@ -68,29 +74,32 @@ public class ProximityActivity extends Activity {
 			notificationContent = "Beléptél a régióba";
 			tickerMessage = "Beléptél a régióba";
 		} else {
-			Toast.makeText(getBaseContext(), "Exiting the region",
-					Toast.LENGTH_LONG).show();
-			notificationTitle = "Proximity - Kilépés";
-			notificationContent = "Elhagyta a régiót";
-			tickerMessage = "Elhagyta a régiót";
+//			Toast.makeText(getBaseContext(), "Exiting the region",
+//					Toast.LENGTH_LONG).show();
+//			notificationTitle = "Proximity - Kilépés";
+//			notificationContent = "Elhagyta a régiót";
+//			tickerMessage = "Elhagyta a régiót";
+			this.finish();
 		}
 
 		Intent notificationIntent = new Intent(getApplicationContext(),
 				NotificationView.class);
 		notificationIntent.putExtra("content", notificationContent);
+		notificationIntent.putExtra("latitude", latitude);
+		notificationIntent.putExtra("longitude", longitude);
 
 		/**
 		 * This is needed to make this intent different from its previous
 		 * intents
 		 */
-		notificationIntent.setData(Uri.parse("tel:/"
-				+ (int) System.currentTimeMillis()));
+//		notificationIntent.setData(Uri.parse("tel:/"
+//				+ (int) System.currentTimeMillis()));
 
 		/**
 		 * Creating different tasks for each notification. See the flag
 		 * Intent.FLAG_ACTIVITY_NEW_TASK
 		 */
-		PendingIntent pendingIntent = PendingIntent.getActivity(
+		pendingIntent = PendingIntent.getActivity(
 				getApplicationContext(), 0, notificationIntent,
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -100,7 +109,7 @@ public class ProximityActivity extends Activity {
 
 		/** Configuring notification builder to create a notification */
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-				getApplicationContext()).setWhen(System.currentTimeMillis())
+				getApplicationContext())
 				.setContentText(notificationContent)
 				.setContentTitle(notificationTitle)
 				.setSmallIcon(R.drawable.ic_launcher).setAutoCancel(true)
@@ -154,7 +163,15 @@ public class ProximityActivity extends Activity {
 																									"Csomag kézbesítve",
 																									Toast.LENGTH_LONG)
 																									.show();
-
+//																							Intent myIntent = new Intent(
+//																									ProximityActivity.this,
+//																									TasksActivity.class);
+//																							myIntent.putExtra(
+//																									"userName",
+//																									userName);
+//																							startActivity(myIntent);
+																							MapV2.MapV2.finish();
+																							finish();
 																						}
 																					});
 																}
@@ -171,6 +188,7 @@ public class ProximityActivity extends Activity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								dialog.cancel();
+								finish();
 							}
 						}).create().show();
 
@@ -184,9 +202,6 @@ public class ProximityActivity extends Activity {
 		 * notification
 		 * */
 		nManager.notify((int) System.currentTimeMillis(), notification);
-
-		/** Finishes the execution of this activity */
-		finish();
 	}
 
 	private void createAndShowDialog(Exception exception, String title) {
