@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -20,7 +21,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PowerManager.WakeLock;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -46,8 +47,8 @@ public class MapV2 extends FragmentActivity implements
 	public boolean isEnd = false;
 	public MarkerOptions start_options;
 	public MarkerOptions des_options;
-	public WakeLock mWakeLock;
-
+	public String userName;
+	public static Activity MapV2;
 
 	public LocationManager locationManager;
 	public PendingIntent pendingIntent;
@@ -56,12 +57,15 @@ public class MapV2 extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_activity2);
+		
+		MapV2 = this;
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 
 			latitude = extras.getString("lat");
 			longitude = extras.getString("lon");
+			userName = extras.getString("userName");
 			lat = Double.parseDouble(latitude);
 			lon = Double.parseDouble(longitude);
 
@@ -89,38 +93,40 @@ public class MapV2 extends FragmentActivity implements
 
 			// Setting event handler for location change
 			googleMap.setOnMyLocationChangeListener(this);
-			
-			if(isEnd){
-				// Getting LocationManager object from System Service LOCATION_SERVICE
-	            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-				
-				// This intent will call the activity ProximityActivity
-	            Intent proximityIntent = new Intent("hu.sze.zoltan.futarflotta.proximity");
-	            proximityIntent.putExtra("latitude", latitude);
-	            proximityIntent.putExtra("longitude", longitude);
-	            
-	            // Creating a pending intent which will be invoked by LocationManager when the specified region is
-	            // entered or exited
-	            pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, proximityIntent,Intent.FLAG_ACTIVITY_NEW_TASK);
-				
-				// Setting proximity alert
-			    // The pending intent will be invoked when the device enters or exits the region 20 meters
-			    // away from the marked point
-			    // The -1 indicates that, the monitor will not be expired
-			    locationManager.addProximityAlert(lat, lon, 20, -1, pendingIntent);
+
+			if (isEnd) {
+				// Getting LocationManager object from System Service
+				// LOCATION_SERVICE
+				locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+				boolean proximity_entering = getIntent().getBooleanExtra(
+						LocationManager.KEY_PROXIMITY_ENTERING, true);
+
+				if (proximity_entering) {
+					// This intent will call the activity ProximityActivity
+					Intent proximityIntent = new Intent(
+							"hu.sze.zoltan.futarflotta.proximity");
+					proximityIntent.putExtra("latitude", latitude);
+					proximityIntent.putExtra("longitude", longitude);
+					proximityIntent.putExtra("userName", userName);
+
+					// Creating a pending intent which will be invoked by
+					// LocationManager when the specified region is
+					// entered or exited
+					pendingIntent = PendingIntent.getActivity(getBaseContext(),
+							0, proximityIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+
+					// Setting proximity alert
+					// The pending intent will be invoked when the device enters
+					// or
+					// exits the region 20 meters
+					// away from the marked point
+					// The -1 indicates that, the monitor will not be expired
+					locationManager.addProximityAlert(lat, lon, 20, -1,
+							pendingIntent);
+				}
 			}
 		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		Intent proximityIntent = new Intent("hu.sze.zoltan.futarflotta.proximity");
-		
-		pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, proximityIntent,Intent.FLAG_ACTIVITY_NEW_TASK);
-		
-		// Removing the proximity alert					
-		locationManager.removeProximityAlert(pendingIntent);
 	}
 
 	@Override
@@ -235,6 +241,13 @@ public class MapV2 extends FragmentActivity implements
 	/** A class to download data from Google Directions URL */
 	private class DownloadTask extends AsyncTask<String, Void, String> {
 
+//		private ProgressDialog Dialog = new ProgressDialog(MapV2.this);
+//
+//		protected void onPreExecute() {
+//			Dialog.setMessage("Útvonal betöltése...");
+//			Dialog.show();
+//		}
+
 		// Downloading data in non-ui thread
 		@Override
 		protected String doInBackground(String... url) {
@@ -256,6 +269,7 @@ public class MapV2 extends FragmentActivity implements
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+//			Dialog.dismiss();
 
 			ParserTask parserTask = new ParserTask();
 
@@ -321,11 +335,40 @@ public class MapV2 extends FragmentActivity implements
 
 			}
 			googleMap.clear();
+
+			LatLng latLngDes = new LatLng(lat, lon);
+			drawCircle(latLngDes);
+
 			googleMap.addMarker(start_options);
 			googleMap.addMarker(des_options);
 
 			// Drawing polyline in the Google Map for the i-th route
 			googleMap.addPolyline(lineOptions);
 		}
+	}
+
+	private void drawCircle(LatLng point) {
+
+		// Instantiating CircleOptions to draw a circle around the marker
+		CircleOptions circleOptions = new CircleOptions();
+
+		// Specifying the center of the circle
+		circleOptions.center(point);
+
+		// Radius of the circle
+		circleOptions.radius(20);
+
+		// Border color of the circle
+		circleOptions.strokeColor(Color.BLACK);
+
+		// Fill color of the circle
+		circleOptions.fillColor(0x30ff0000);
+
+		// Border width of the circle
+		circleOptions.strokeWidth(2);
+
+		// Adding the circle to the GoogleMap
+		googleMap.addCircle(circleOptions);
+
 	}
 }

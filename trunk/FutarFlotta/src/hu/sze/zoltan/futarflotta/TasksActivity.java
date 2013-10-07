@@ -22,7 +22,6 @@ import com.microsoft.windowsazure.mobileservices.ServiceFilter;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
-import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 
 public class TasksActivity extends Activity {
@@ -33,6 +32,7 @@ public class TasksActivity extends Activity {
 	private ProgressBar mProgressBar;
 	public String userName;
 	public ListView mListView;
+	public String fullName;
 	public String latitude = "";
 	public String longitude = "";
 	public boolean akarmi = false;
@@ -46,6 +46,7 @@ public class TasksActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			userName = extras.getString("userName");
+			fullName = extras.getString("fullName");
 		}
 		
 		mListView = (ListView) findViewById(R.id.listViewTasks);
@@ -82,41 +83,17 @@ public class TasksActivity extends Activity {
 					Intent myIntent = new Intent(TasksActivity.this, MapV2.class);
 					myIntent.putExtra("lat", address.getLatitude());
 					myIntent.putExtra("lon", address.getLongitude());
+					myIntent.putExtra("userName", userName);
 					startActivity(myIntent);
+					finish();
 				}
 			});
 
 		} catch (MalformedURLException e) {
-			createAndShowDialog(new Exception("There was an error creating the Mobile Service. Verify the URL"), "Error");
+			createAndShowDialog(new Exception("Hiba történt a szerverrel való kommunikáció közben. Kérem ellenõrizze a kapcsolatot."), "Error");
 		}
 	}
 	
-
-	
-
-	/**
-	 * Mark an item as completed
-	 * 
-	 * @param item
-	 *            The item to mark
-	 */
-	public void checkItem(Tasks item) {
-		if (mClient == null) {
-			return;
-		}
-
-		
-		mTasksTable.update(item, new TableOperationCallback<Tasks>() {
-
-			public void onCompleted(Tasks entity, Exception exception, ServiceFilterResponse response) {
-				if (exception == null) {
-				} else {
-					createAndShowDialog(exception, "Error");
-				}
-			}
-
-		});
-	}
 
 	/**
 	 * Refresh the list with the items in the Mobile Service Table

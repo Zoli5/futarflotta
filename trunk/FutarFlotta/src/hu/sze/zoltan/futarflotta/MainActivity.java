@@ -2,6 +2,7 @@ package hu.sze.zoltan.futarflotta;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -19,9 +20,11 @@ public class MainActivity extends Activity {
 	private Button btnTasks;
 	private Button btnSettings;
 	public TextView txtViewUser;
-	public String value;
+	public String fullName;
 	public String userName;
 	public String ures = "main";
+	public LocationManager locationManager;
+	public PendingIntent pendingIntent;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,13 +39,13 @@ public class MainActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			value = extras.getString("fullName");
+			fullName = extras.getString("fullName");
 			userName = extras.getString("userName");
 		}
 
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-		txtViewUser.setText(value);
+		txtViewUser.setText(fullName);
 
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			new AlertDialog.Builder(this)
@@ -86,6 +89,12 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				Intent proximityIntent = new Intent("hu.sze.zoltan.futarflotta.proximity");
+				
+				pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, proximityIntent,Intent.FLAG_ACTIVITY_NEW_TASK);
+				
+				// Removing the proximity alert					
+				locationManager.removeProximityAlert(pendingIntent);
 				finish();
 			}
 		});
@@ -97,6 +106,7 @@ public class MainActivity extends Activity {
 				Intent myIntent = new Intent(MainActivity.this,
 						TasksActivity.class);
 				myIntent.putExtra("userName", userName);
+				myIntent.putExtra("fullName", fullName);
 				startActivity(myIntent);
 			}
 		});
