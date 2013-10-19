@@ -17,14 +17,14 @@
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Köszönöm hogy letöltötte az alkalmazásom. Az alakalmazáshoz tartozó weboldalt a következő cimen találja: http://futarflotta.azurewebsites.net/login.php"
+        android:text="@string/info_text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Verzió: 1.0"
+        android:text="@string/verzio"
         android:layout_marginTop="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -32,7 +32,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Készitette: Szuri Zoltán"
+        android:text="@string/made_by"
         android:layout_marginTop="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

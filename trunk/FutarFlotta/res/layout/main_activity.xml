@@ -6,49 +6,49 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Futár Flotta"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:contentDescription="@string/title"
+            android:src="@drawable/title" />
 
         <Button
             android:id="@+id/btnMap"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Térkép" />
+            android:background="@drawable/custom_button"
+            android:drawableStart="@drawable/map"
+            android:text="@string/map" />
 
         <Button
             android:id="@+id/btnTasks"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Feladatok" />
+            android:background="@drawable/custom_button"
+            android:drawableStart="@drawable/check_list"
+            android:text="@string/tasks" />
 
         <Button
             android:id="@+id/btnSettings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Beállítások" />
+            android:background="@drawable/custom_button"
+            android:drawableStart="@drawable/settings"
+            android:text="@string/settings" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnLogOut"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="36dp"
-        android:text="Kijelentkezés" />
 
     <TextView
         android:id="@+id/txtFelhasznalo"
@@ -56,7 +56,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="Felhasználó"
+        android:text="@string/user"
+        android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtFelhasznalo"
+        android:layout_alignLeft="@+id/txtFelhasznalo"
+        android:drawableStart="@drawable/lock"
+        android:text="@string/logout"
+        android:background="@drawable/custom_button" />
 
 </RelativeLayout>

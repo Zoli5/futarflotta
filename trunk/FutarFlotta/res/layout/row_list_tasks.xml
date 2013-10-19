@@ -8,7 +8,8 @@
         android:id="@+id/taskItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="25dp"
+        android:textColor="#000000"
         android:text="@string/task_textview_text" />
 
 </LinearLayout>

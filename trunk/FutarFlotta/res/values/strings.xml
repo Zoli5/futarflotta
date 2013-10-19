@@ -3,14 +3,29 @@
 
     <string name="app_name">Futár Flotta</string>
     <string name="action_settings">Újretöltés</string>
-    <string name="hello_world">Hello world!</string>
 
-    <string name="add_textbox_hint">Add username</string>
-    <string name="add_button_text">Add</string>
-    <string name="mobile_services">Új felhasználó </string>
     <string name="menu_refresh">Refresh</string>
     <string name="textview_text">Item Text</string>
     <string name="task_textview_text">Item Text</string>
     <string name="tasks">Feladatok</string>
-	<string name="txt_destination_reached">You have reached your destination!</string>
+	<string name="txt_destination_reached">Elérte a célpontot.</string>
+	<string name="change_pass">Jelszó változtatás</string>
+	<string name="gps_onoff">GPS be- vagy kikapcsolása</string>
+	<string name="about">Névjegy</string>
+	<string name="gps_status">GPS állapot:</string>
+	<string name="title">title</string>
+	<string name="map">Térkép</string>
+	<string name="settings">Beállítások</string>
+	<string name="user">Felhasználó</string>
+	<string name="logout">Kijelentkezés</string>
+	<string name="please_wait">Kérem várjon...</string>
+	<string name="password_change">Jelszó változtatás</string>
+	<string name="old_pass">Régi jelszó:</string>
+	<string name="new_pass">Új jelszó:</string>
+	<string name="new_pass_again">Jelszó újra:</string>
+	<string name="cancel">Mégse</string>
+	<string name="change">Változtatás</string>
+	<string name="made_by">Készitette: Szuri Zoltán</string>
+	<string name="verzio">Verzió: 1.0</string>
+	<string name="info_text">Köszönöm hogy letöltötte az alkalmazásom. Az alakalmazáshoz tartozó weboldalt a következő cimen találja: http://futarflotta.azurewebsites.net/login.php</string>
 </resources>
