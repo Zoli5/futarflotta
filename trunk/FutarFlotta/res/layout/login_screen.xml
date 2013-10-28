@@ -1,8 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
@@ -11,7 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/futarflotta_logo" />
+        android:src="@drawable/futarflotta_logo" 
+        android:contentDescription="@string/logo"/>
 
     <EditText
         android:id="@+id/txtUser"
@@ -22,7 +27,7 @@
         android:layout_marginTop="186dp"
         android:layout_toRightOf="@+id/textView1"
         android:ems="10"
-        android:hint="Felhasználónév"
+        android:hint="@string/user_name"
         android:singleLine="true" >
 
         <requestFocus />
@@ -35,7 +40,7 @@
         android:layout_alignBaseline="@+id/txtPassword"
         android:layout_alignBottom="@+id/txtPassword"
         android:layout_alignRight="@+id/textView1"
-        android:text="Jelszó"
+        android:text="@string/password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -44,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtPassword"
         android:layout_alignParentLeft="true"
-        android:text="Felhasználónév"
+        android:text="@string/user_name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -54,7 +59,7 @@
         android:layout_above="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:text="Bejelentkezés"
+        android:text="@string/login"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -65,7 +70,7 @@
         android:layout_below="@+id/txtUser"
         android:layout_toRightOf="@+id/textView2"
         android:ems="10"
-        android:hint="•••••••"
+        android:hint="@string/pass_hide"
         android:inputType="textPassword"
         android:singleLine="true" />
 
@@ -76,8 +81,8 @@
         android:layout_below="@+id/txtPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-        android:text="Bejelentkezés"
-        android:background="@drawable/custom_button" />
+        android:background="@drawable/custom_button"
+        android:text="@string/login" />
 
     <Button
         android:id="@+id/btnCancel"
@@ -88,7 +93,5 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/turn_off_button" />
-
-    
 
 </RelativeLayout>

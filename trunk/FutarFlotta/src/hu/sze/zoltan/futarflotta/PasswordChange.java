@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +15,11 @@ import android.widget.Toast;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.NextServiceFilterCallback;
+import com.microsoft.windowsazure.mobileservices.ServiceFilter;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
 import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
 import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 
@@ -28,6 +33,7 @@ public class PasswordChange extends Activity {
 	public String userName;
 	public String password;
 	public Users user;
+	public ProgressDialog dialog;
 	private MobileServiceClient mClient;
 	private MobileServiceTable<Users> mUsersTable;
 
@@ -40,28 +46,28 @@ public class PasswordChange extends Activity {
 			userName = extras.getString("userName");
 		}
 
-		// final DatabaseHandler db = new
-		// DatabaseHandler(getApplicationContext());
-
 		btnChange = (Button) findViewById(R.id.btnChange);
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		edOldPassword = (EditText) findViewById(R.id.edOldPassword);
 		edNewPassword = (EditText) findViewById(R.id.edNewPassword);
 		edNewPassword2 = (EditText) findViewById(R.id.edNewPassword2);
 
+		dialog = new ProgressDialog(PasswordChange.this);
+		dialog.setTitle("Mentés...");
+		dialog.setMessage("Kérem várjon...");
+		dialog.setCancelable(false);
+		dialog.setIndeterminate(true);
+
 		try {
 			mClient = new MobileServiceClient(
 					"https://futarflottamobile.azure-mobile.net/",
-					"cMEWVBgHzMZBCrVgFByLvcgwTkfZmo87", this);
+					"cMEWVBgHzMZBCrVgFByLvcgwTkfZmo87", this).withFilter(new ProgressFilter());
 
 		} catch (MalformedURLException e) {
-			createAndShowDialog(
-					new Exception(
-							"There was an error creating the Mobile Service. Verify the URL"),
+			createAndShowDialog(new Exception(
+					"Hiba a csatlakozással, kérem ellenõrizze a kapcsolatot."),
 					"Error");
 		}
-
-		// user = db.getUsers(userName);
 
 		btnCancel.setOnClickListener(new OnClickListener() {
 
@@ -155,5 +161,45 @@ public class PasswordChange extends Activity {
 		builder.setMessage(message);
 		builder.setTitle(title);
 		builder.create().show();
+	}
+
+	private class ProgressFilter implements ServiceFilter {
+
+		@Override
+		public void handleRequest(ServiceFilterRequest request,
+				NextServiceFilterCallback nextServiceFilterCallback,
+				final ServiceFilterResponseCallback responseCallback) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (dialog != null) {
+						dialog.show();
+					}
+				}
+			});
+
+			nextServiceFilterCallback.onNext(request,
+					new ServiceFilterResponseCallback() {
+
+						@Override
+						public void onResponse(ServiceFilterResponse response,
+								Exception exception) {
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									if (dialog != null) {
+										dialog.cancel();
+									}
+								}
+							});
+
+							if (responseCallback != null)
+								responseCallback
+										.onResponse(response, exception);
+						}
+					});
+		}
 	}
 }

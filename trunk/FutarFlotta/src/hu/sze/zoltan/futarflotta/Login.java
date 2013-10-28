@@ -45,15 +45,6 @@ public class Login extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_screen);
 
-		// final DatabaseHandler db = new
-		// DatabaseHandler(getApplicationContext());
-		//
-		// db.addUser(new UsersItem("zszuri", "Szuri Zoltán", "1234"));
-		// db.addUser(new UsersItem("tszabo", "Szabó Tamás", "1234"));
-		// db.addUser(new UsersItem("lbedecs", "Bedecs László", "1234"));
-		// db.addUser(new UsersItem("dcsanicz", "Csánicz Dóri", "1234"));
-		// db.addUser(new UsersItem("teszt", "Teszt", "a"));
-
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		txtPassword = (EditText) findViewById(R.id.txtPassword);
@@ -76,7 +67,7 @@ public class Login extends Activity {
 		} catch (MalformedURLException e) {
 			createAndShowDialog(
 					new Exception(
-							"There was an error creating the Mobile Service. Verify the URL"),
+							"Hiba a csatlakozással, kérem ellenõrizze a kapcsolatot."),
 					"Error");
 		}
 
@@ -130,48 +121,6 @@ public class Login extends Activity {
 								}
 							}
 						});
-
-				// if (db.isMatch(txtUser.getText().toString()) == true) {
-				// user = db.getUsers(txtUser.getText().toString());
-				// if (txtPassword.getText().toString()
-				// .equals(user.getPassword())) {
-				//
-				// kiserlet = 0;
-				// txtPassword.setText("");
-				// txtUser.setText("");
-				// txtUser.setFocusable(true);
-				// Intent myIntent = new Intent(Login.this,
-				// MainActivity.class);
-				// myIntent.putExtra("fullName", user.getFullName());
-				// myIntent.putExtra("userName", user.getUserName());
-				// startActivity(myIntent);
-				//
-				// } else {
-				// if (kiserlet < 3) {
-				// felbukkanoAblak("Hiba!",
-				// "Hibás jelszó vagy felhasználónév!", "OK");
-				// kiserlet++;
-				// } else {
-				// felbukkanoAblak2("Hiba!",
-				// "Túl sokszor próbálkozott!", "Kilépés");
-				// }
-				//
-				// // Toast.makeText(getApplicationContext(),
-				// // "Hibás jelszó", Toast.LENGTH_LONG).show();
-				// }
-				// } else {
-				// if (kiserlet < 3) {
-				// felbukkanoAblak("Hiba!",
-				// "Hibás jelszó vagy felhasználónév!", "OK");
-				// kiserlet++;
-				// } else {
-				// felbukkanoAblak2("Hiba!", "Túl sokszor próbálkozott!",
-				// "Kilépés");
-				// }
-				// // Toast.makeText(getApplicationContext(),
-				// // "Hibás felhasználónév", Toast.LENGTH_LONG).show();
-				//
-				// }
 			}
 		});
 

@@ -26,10 +26,12 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -48,6 +50,7 @@ public class MapV2 extends FragmentActivity implements
 	public MarkerOptions start_options;
 	public MarkerOptions des_options;
 	public String userName;
+	public boolean elsoInditas = true;
 	public static Activity MapV2;
 
 	public LocationManager locationManager;
@@ -57,7 +60,7 @@ public class MapV2 extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_activity2);
-		
+
 		MapV2 = this;
 
 		Bundle extras = getIntent().getExtras();
@@ -71,6 +74,10 @@ public class MapV2 extends FragmentActivity implements
 
 			isEnd = true;
 		}
+
+		// Getting LocationManager object from System Service
+		// LOCATION_SERVICE
+		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 		int status = GooglePlayServicesUtil
 				.isGooglePlayServicesAvailable(getBaseContext());
@@ -95,10 +102,6 @@ public class MapV2 extends FragmentActivity implements
 			googleMap.setOnMyLocationChangeListener(this);
 
 			if (isEnd) {
-				// Getting LocationManager object from System Service
-				// LOCATION_SERVICE
-				locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
 				boolean proximity_entering = getIntent().getBooleanExtra(
 						LocationManager.KEY_PROXIMITY_ENTERING, true);
 
@@ -163,9 +166,18 @@ public class MapV2 extends FragmentActivity implements
 		googleMap = fm.getMap();
 
 		googleMap.addMarker(start_options);
-		googleMap.addMarker(des_options);
+
+		if (elsoInditas) {
+			elsoInditas = false;
+			CameraPosition cameraPosition = new CameraPosition.Builder()
+					.target(latLng).zoom(16).build();
+
+			googleMap.animateCamera(CameraUpdateFactory
+					.newCameraPosition(cameraPosition));
+		}
 
 		if (isEnd) {
+			googleMap.addMarker(des_options);
 			String url = getDirectionsUrl(latLng, latLngDes);
 			DownloadTask downloadTask = new DownloadTask();
 			downloadTask.execute(url);
@@ -241,12 +253,12 @@ public class MapV2 extends FragmentActivity implements
 	/** A class to download data from Google Directions URL */
 	private class DownloadTask extends AsyncTask<String, Void, String> {
 
-//		private ProgressDialog Dialog = new ProgressDialog(MapV2.this);
-//
-//		protected void onPreExecute() {
-//			Dialog.setMessage("Útvonal betöltése...");
-//			Dialog.show();
-//		}
+		// private ProgressDialog Dialog = new ProgressDialog(MapV2.this);
+		//
+		// protected void onPreExecute() {
+		// Dialog.setMessage("Útvonal betöltése...");
+		// Dialog.show();
+		// }
 
 		// Downloading data in non-ui thread
 		@Override
@@ -269,7 +281,7 @@ public class MapV2 extends FragmentActivity implements
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-//			Dialog.dismiss();
+			// Dialog.dismiss();
 
 			ParserTask parserTask = new ParserTask();
 
@@ -335,7 +347,6 @@ public class MapV2 extends FragmentActivity implements
 
 			}
 			googleMap.clear();
-
 			LatLng latLngDes = new LatLng(lat, lon);
 			drawCircle(latLngDes);
 
