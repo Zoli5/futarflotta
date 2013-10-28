@@ -1,1 +1,0 @@
-insert into users(id, name, username, password) values (1, "Szuri Zoltán", "zszuri", "123");

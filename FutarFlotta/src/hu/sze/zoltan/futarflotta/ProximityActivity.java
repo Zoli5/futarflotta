@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
@@ -39,7 +40,6 @@ public class ProximityActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.proximity_activity);
 
@@ -63,7 +63,7 @@ public class ProximityActivity extends Activity {
 		} catch (MalformedURLException e) {
 			createAndShowDialog(
 					new Exception(
-							"There was an error creating the Mobile Service. Verify the URL"),
+							"Hiba a csatlakozással, kérem ellenõrizze a kapcsolatot."),
 					"Error");
 		}
 
@@ -71,14 +71,14 @@ public class ProximityActivity extends Activity {
 			Toast.makeText(getBaseContext(), "Entering the region",
 					Toast.LENGTH_LONG).show();
 			notificationTitle = "Proximity - Belépés";
-			notificationContent = "Beléptél a régióba";
-			tickerMessage = "Beléptél a régióba";
+			notificationContent = "Belépett a régióba";
+			tickerMessage = "Belépett a régióba";
 		} else {
-//			Toast.makeText(getBaseContext(), "Exiting the region",
-//					Toast.LENGTH_LONG).show();
-//			notificationTitle = "Proximity - Kilépés";
-//			notificationContent = "Elhagyta a régiót";
-//			tickerMessage = "Elhagyta a régiót";
+			Toast.makeText(getBaseContext(), "Exiting the region",
+					Toast.LENGTH_LONG).show();
+			notificationTitle = "Proximity - Kilépés";
+			notificationContent = "Elhagyta a régiót";
+			tickerMessage = "Elhagyta a régiót";
 			this.finish();
 		}
 
@@ -92,8 +92,8 @@ public class ProximityActivity extends Activity {
 		 * This is needed to make this intent different from its previous
 		 * intents
 		 */
-//		notificationIntent.setData(Uri.parse("tel:/"
-//				+ (int) System.currentTimeMillis()));
+		notificationIntent.setData(Uri.parse("tel:/"
+				+ (int) System.currentTimeMillis()));
 
 		/**
 		 * Creating different tasks for each notification. See the flag
@@ -112,7 +112,7 @@ public class ProximityActivity extends Activity {
 				getApplicationContext())
 				.setContentText(notificationContent)
 				.setContentTitle(notificationTitle)
-				.setSmallIcon(R.drawable.ic_launcher).setAutoCancel(true)
+				.setSmallIcon(R.drawable.futarflotta_logo).setAutoCancel(true)
 				.setTicker(tickerMessage).setContentIntent(pendingIntent);
 
 		new AlertDialog.Builder(this)

@@ -4,17 +4,31 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:clickable="false"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/settings"
+        android:textSize="35sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp" >
 
         <TextView
-            android:id="@+id/textView1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_weight="0.10"
+            android:gravity="center_vertical"
             android:text="@string/gps_status"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#000000" />
@@ -29,6 +43,7 @@
         android:id="@+id/btnGPS"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@drawable/custom_button"
         android:text="@string/gps_onoff" />
 
@@ -36,6 +51,7 @@
         android:id="@+id/btnPasswordChange"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@drawable/custom_button"
         android:text="@string/change_pass" />
 
@@ -43,6 +59,7 @@
         android:id="@+id/btnAbout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@drawable/custom_button"
         android:text="@string/about" />
 

@@ -90,7 +90,7 @@ public class TasksActivity extends Activity {
 			});
 
 		} catch (MalformedURLException e) {
-			createAndShowDialog(new Exception("Hiba történt a szerverrel való kommunikáció közben. Kérem ellenõrizze a kapcsolatot."), "Error");
+			createAndShowDialog(new Exception("Hiba a csatlakozással, kérem ellenõrizze a kapcsolatot."), "Error");
 		}
 	}
 	

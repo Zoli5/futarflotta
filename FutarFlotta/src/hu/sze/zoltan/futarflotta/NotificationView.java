@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
@@ -44,7 +43,7 @@ public class NotificationView extends Activity {
 		} catch (MalformedURLException e) {
 			createAndShowDialog(
 					new Exception(
-							"There was an error creating the Mobile Service. Verify the URL"),
+							"Hiba a csatlakozással, kérem ellenõrizze a kapcsolatot."),
 					"Error");
 		}
 
@@ -52,12 +51,11 @@ public class NotificationView extends Activity {
 		btnYes = (Button) findViewById(R.id.btnYes);
 		pbLoading = (ProgressBar) findViewById(R.id.progressBar1);
 		llDelivered = (LinearLayout) findViewById(R.id.ll_delivered);
-		TextView tv = (TextView) findViewById(R.id.tv_notification);
 
 		Bundle data = getIntent().getExtras();
-		tv.setText(data.getString("content"));
 		latitude = data.getString("latitude");
 		longitude = data.getString("longitude");
+		Toast.makeText(getApplicationContext(),data.getString("content"),Toast.LENGTH_LONG).show();
 
 		pbLoading.setVisibility(ProgressBar.GONE);
 
@@ -74,6 +72,7 @@ public class NotificationView extends Activity {
 								for (Tasks item : result) {
 									if(item.isComplete() == true){
 										llDelivered.setVisibility(LinearLayout.GONE);
+										finish();
 									} else {
 										llDelivered.setVisibility(LinearLayout.VISIBLE);
 									}

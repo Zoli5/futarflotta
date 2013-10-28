@@ -28,4 +28,12 @@
 	<string name="made_by">Készitette: Szuri Zoltán</string>
 	<string name="verzio">Verzió: 1.0</string>
 	<string name="info_text">Köszönöm hogy letöltötte az alkalmazásom. Az alakalmazáshoz tartozó weboldalt a következő cimen találja: http://futarflotta.azurewebsites.net/login.php</string>
+	<string name="user_name">Felhasználónév</string>
+	<string name="password">Jelszó</string>
+	<string name="login">Bejelentkezés</string>
+	<string name="pass_hide">•••••••</string>
+	<string name="logo">logo</string>
+	<string name="delivery_done">Kézbesítette a csomagot?</string>
+	<string name="no">Nem</string>
+	<string name="yes">Igen</string>
 </resources>
