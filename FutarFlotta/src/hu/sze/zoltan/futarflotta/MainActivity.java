@@ -81,6 +81,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent myIntent = new Intent(MainActivity.this, MapV2.class);
+				myIntent.putExtra("userName", userName);
+				myIntent.putExtra("main", true);
 				startActivity(myIntent);
 			}
 		});

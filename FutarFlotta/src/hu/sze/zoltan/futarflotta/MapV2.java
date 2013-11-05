@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +14,10 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -34,11 +37,20 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.NextServiceFilterCallback;
+import com.microsoft.windowsazure.mobileservices.ServiceFilter;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterRequest;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
+import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 
 public class MapV2 extends FragmentActivity implements
-		OnMyLocationChangeListener {
+		OnMyLocationChangeListener, GoogleMap.OnMarkerClickListener {
 
 	public GoogleMap googleMap;
 	public String address;
@@ -46,15 +58,25 @@ public class MapV2 extends FragmentActivity implements
 	public String longitude = "";
 	public double lon = 0.0;
 	public double lat = 0.0;
+	public double longitudeDB = 0.0;
+	public double latitudeDB = 0.0;
 	public boolean isEnd = false;
 	public MarkerOptions start_options;
 	public MarkerOptions des_options;
+	public MarkerOptions des_options_db;
 	public String userName;
 	public boolean elsoInditas = true;
 	public static Activity MapV2;
+	public boolean kesze = false;
+	public boolean main;
+
+	public ProgressDialog dialog;
 
 	public LocationManager locationManager;
 	public PendingIntent pendingIntent;
+
+	private MobileServiceClient mClient;
+	private MobileServiceTable<Tasks> mTasksTable;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +87,32 @@ public class MapV2 extends FragmentActivity implements
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-
-			latitude = extras.getString("lat");
-			longitude = extras.getString("lon");
-			userName = extras.getString("userName");
-			lat = Double.parseDouble(latitude);
-			lon = Double.parseDouble(longitude);
-
-			isEnd = true;
+			
+			main = extras.getBoolean("main");
+			
+			if (main){
+				userName = extras.getString("userName");
+			} else {
+				latitude = extras.getString("lat");
+				longitude = extras.getString("lon");
+				lat = Double.parseDouble(latitude);
+				lon = Double.parseDouble(longitude);
+				userName = extras.getString("userName");
+				
+				isEnd = true;
+			}
+			
 		}
 
 		// Getting LocationManager object from System Service
 		// LOCATION_SERVICE
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+		dialog = new ProgressDialog(MapV2.this);
+		dialog.setTitle("Cimek betöltése...");
+		dialog.setMessage("Kérem várjon...");
+		dialog.setCancelable(false);
+		dialog.setIndeterminate(true);
 
 		int status = GooglePlayServicesUtil
 				.isGooglePlayServicesAvailable(getBaseContext());
@@ -128,6 +163,58 @@ public class MapV2 extends FragmentActivity implements
 					locationManager.addProximityAlert(lat, lon, 20, -1,
 							pendingIntent);
 				}
+			} else {
+				try {
+					mClient = new MobileServiceClient(
+							"https://futarflottamobile.azure-mobile.net/",
+							"cMEWVBgHzMZBCrVgFByLvcgwTkfZmo87", this)
+							.withFilter(new ProgressFilter());
+
+				} catch (MalformedURLException e) {
+					createAndShowDialog(
+							new Exception(
+									"Hiba a csatlakozással, kérem ellenõrizze a kapcsolatot."),
+							"Error");
+				}
+
+				googleMap.clear();
+
+				mTasksTable = mClient.getTable(Tasks.class);
+				mTasksTable.where().field("username").eq(userName).and()
+						.field("completed").eq(kesze)
+						.execute(new TableQueryCallback<Tasks>() {
+
+							@Override
+							public void onCompleted(List<Tasks> result, int count, Exception exception, ServiceFilterResponse response) {
+								if (exception == null) {
+										for (Tasks item : result) {
+											des_options_db = new MarkerOptions();
+
+											String lat_db = item.getLatitude();
+											String lon_db = item.getLongitude();
+
+											latitudeDB = Double
+													.parseDouble(lat_db);
+											longitudeDB = Double
+													.parseDouble(lon_db);
+											LatLng latLngDesDB = new LatLng(
+													latitudeDB, longitudeDB);
+											des_options_db
+													.position(latLngDesDB).title(item.getAddress());
+
+											des_options_db
+													.icon(BitmapDescriptorFactory
+															.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+											googleMap.addMarker(des_options_db);
+										}							
+								} else {
+									createAndShowDialog(exception, "Error");
+								}
+
+							}
+
+						});
 			}
 		}
 	}
@@ -381,5 +468,67 @@ public class MapV2 extends FragmentActivity implements
 		// Adding the circle to the GoogleMap
 		googleMap.addCircle(circleOptions);
 
+	}
+
+	private void createAndShowDialog(Exception exception, String title) {
+		createAndShowDialog(exception.toString(), title);
+	}
+
+	private void createAndShowDialog(String message, String title) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setMessage(message);
+		builder.setTitle(title);
+		builder.create().show();
+	}
+
+	private class ProgressFilter implements ServiceFilter {
+
+		@Override
+		public void handleRequest(ServiceFilterRequest request,
+				NextServiceFilterCallback nextServiceFilterCallback,
+				final ServiceFilterResponseCallback responseCallback) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (dialog != null) {
+						dialog.show();
+					}
+				}
+			});
+
+			nextServiceFilterCallback.onNext(request,
+					new ServiceFilterResponseCallback() {
+
+						@Override
+						public void onResponse(ServiceFilterResponse response,
+								Exception exception) {
+							runOnUiThread(new Runnable() {
+
+								@Override
+								public void run() {
+									if (dialog != null) {
+										dialog.cancel();
+									}
+								}
+							});
+
+							if (responseCallback != null)
+								responseCallback
+										.onResponse(response, exception);
+						}
+					});
+		}
+	}
+
+	@Override
+	public boolean onMarkerClick(Marker marker) {
+		if(marker.isInfoWindowShown()) {
+            marker.hideInfoWindow();
+        } else {
+            marker.showInfoWindow();
+        }
+        return true;
 	}
 }
